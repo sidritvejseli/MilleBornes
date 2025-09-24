@@ -1,6 +1,5 @@
 package cartes;
 
-import java.awt.Window.Type;
 
 public class Parade extends Bataille {
 
