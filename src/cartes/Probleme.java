@@ -1,13 +1,11 @@
 package cartes;
 
-import java.awt.Window.Type;
-
 public abstract class Probleme {
 	private Type type;
 
 	
-public Probleme(Type type) {
-	this.type = type;
+protected Probleme(Type type2) {
+	this.type = type2;
 }
 
 public Type getType() {
