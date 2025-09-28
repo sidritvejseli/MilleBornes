@@ -9,6 +9,6 @@ public class Botte extends Probleme {
 @Override
 public String toString() {
 	// TODO Auto-generated method stub
-	return getType().toString();
+	return getType().getBotte().toString();
 }
 }

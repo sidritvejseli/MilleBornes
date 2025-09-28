@@ -10,7 +10,7 @@ public class Parade extends Bataille {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return getType().toString();
+		return getType().getParade().toString();
 	}
 
 }
