@@ -1,6 +1,6 @@
 package cartes;
 
-
+//new
 public class Attaque extends Bataille {
 
 	public Attaque(Type type) {
