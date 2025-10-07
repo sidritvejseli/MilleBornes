@@ -1,16 +1,22 @@
 package cartes;
 
-
 public class Parade extends Bataille {
 
 	public Parade(Type type) {
 		super(type);
-		// TODO Auto-generated constructor stub
-	}
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return getType().getParade().toString();
+
 	}
 
+	@Override
+	public String toString() {
+		return getType().toString();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Parade parade) {
+			return this.toString().equals(parade.toString());
+		}
+		return false;
+	}
 }

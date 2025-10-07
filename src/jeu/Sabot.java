@@ -7,64 +7,62 @@ import java.util.NoSuchElementException;
 import cartes.Carte;
 import cartes.JeuDeCartes;
 
-public class Sabot implements Iterable<Carte>{
+public class Sabot implements Iterable<Carte> {
 	int indiceIterateur = 0;
 	int nombreOperations = 0;
-	
-	int nbCartes = 110;
+
+	int nbCartes;
 	Carte[] cartes;
 	JeuDeCartes jeu;
-	
-	
-	public Sabot() {
+
+	public Sabot(Carte[] cartes) {
 		jeu = new JeuDeCartes();
-		cartes = jeu.donnerCartes();
+		this.cartes = cartes;
+		nbCartes = cartes.length;
 	}
-	
+
 	public boolean estVide() {
+		
 		return nbCartes == 0;
 	}
-	
+
 	public void ajouterCarte(Carte carte) {
-		if (nbCartes == 110) {
+		if (nbCartes == cartes.length) {
 			throw new IllegalStateException("Le sabot est plein");
 		}
+		cartes[nbCartes - 1] = null;
 		cartes[nbCartes] = carte;
-		nombreOperations ++;
+		nombreOperations++;
 		nbCartes++;
 	}
-	
+
 	public Carte piocher() {
 		if (estVide()) {
-			throw new IllegalStateException("Le sabot est plein");
+			throw new IllegalStateException("Le sabot est vide");
 		}
-		
-		
+
 		Carte cartePioche = cartes[0];
-		for (int i = 0 ; i < nbCartes-1 ;i++) {
-			cartes[i] = cartes[i+1];
+		for (int i = 0; i < nbCartes - 1; i++) {
+			cartes[i] = cartes[i + 1];
 		}
-		nbCartes --;
-		nombreOperations ++;
+		nbCartes--;
+		nombreOperations++;
 		return cartePioche;
-		
+
 	}
-	private class Iterateur implements Iterator<Carte> 
-	
-	{
+
+	private class Iterateur implements Iterator<Carte> {
 		private int indiceIterateur = 0;
 		private boolean nextEffectue = false;
 		private int nombreOperationsReference = nombreOperations;
-		public Iterateur() {
-			// TODO Auto-generated constructor stub
-		}
+
 
 		private void verificationConcurrence() {
-			if (nombreOperations != nombreOperationsReference){
+			if (nombreOperations != nombreOperationsReference) {
 				throw new ConcurrentModificationException();
 			}
 		}
-		
+
 		@Override
 		public boolean hasNext() {
 			return indiceIterateur < cartes.length;
@@ -72,35 +70,37 @@ public class Sabot implements Iterable<Carte>{
 
 		@Override
 		public Carte next() {
-			if(hasNext()) {
+			verificationConcurrence();
+			if (hasNext()) {
 				Carte carte = cartes[indiceIterateur];
 				indiceIterateur++;
 				nextEffectue = true;
 				return carte;
-			}
-			else {
+			} else {
 				throw new NoSuchElementException();
 			}
 		}
-		
+
 		@Override
 		public void remove() {
-			if(nbCartes < 1 || !nextEffectue){
+			verificationConcurrence();
+			if (nbCartes < 1 || !nextEffectue) {
 				throw new NoSuchElementException();
-			};
-			for(int i = indiceIterateur -1 ; i<nbCartes -1; i++) {
-				cartes[i] = cartes[i+1];
+			}
+			;
+			for (int i = indiceIterateur - 1; i < nbCartes - 1; i++) {
+				cartes[i] = cartes[i + 1];
 			}
 			nextEffectue = true;
-			indiceIterateur --;
-			nbCartes --;
+			indiceIterateur--;
+			nbCartes--;
 		}
-		
+
 	}
+
 	@Override
-	public Iterator<Carte> iterator(){
+	public Iterator<Carte> iterator() {
 		return new Iterateur();
 	}
-	
-	
+
 }

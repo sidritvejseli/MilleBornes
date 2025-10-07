@@ -2,13 +2,18 @@ package cartes;
 
 public class DebutLimite extends Limite {
 
-	public DebutLimite() {
-		// TODO Auto-generated constructor stub
-	}
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return "Limite 50";
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof DebutLimite debutLimite) {
+			return this.toString().equals(debutLimite.toString());
+			
+		}
+		return false;
 	}
 
 }
