@@ -4,24 +4,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
-
-import javax.swing.text.html.HTMLDocument.Iterator;
+import java.util.Random;
 
 public class GestionCartes {
 
 	public static <T> T extraire(List<T> liste) {
-//		List<T> elements = new ArrayList<>();
-//		Collections.addAll(elements, liste);
-
-		// indice de l'element a enlever
-		int indiceAleatoire = (int) (Math.random() * liste.size());
-//		ListIterator<T> iterateur = liste.listIterator(indiceAleatoire);
+		Random random = new Random();
+		int indiceAleatoire =  (random.nextInt( liste.size()));
 		T element = liste.get(indiceAleatoire);
 		liste.remove(indiceAleatoire);
 		return element;
 	}
 
-	// iterateur dans extraire -> utiliser la taille de la liste au debut;
 	public static <T> List<T> melanger(List<T> liste) {
 		List<T> listeMelange = new ArrayList<>();
 		int taille = liste.size();
@@ -56,7 +50,7 @@ public class GestionCartes {
 
 	public static <T> List<T> rassembler(List<T> liste) {
 		List<T> listeRassemble = new ArrayList<>();
-		List<T> copie = new ArrayList<>(liste); 
+		List<T> copie = new ArrayList<>(liste);
 
 		while (!copie.isEmpty()) {
 			T element = copie.get(0);
@@ -65,40 +59,39 @@ public class GestionCartes {
 					listeRassemble.add(e);
 				}
 			}
-			
-			   ListIterator<T> it = copie.listIterator();
-		        while (it.hasNext()) {
-		            if (it.next().equals(element)) {
-		                it.remove();
-		            }
-		        }
+
+			ListIterator<T> it = copie.listIterator();
+			while (it.hasNext()) {
+				if (it.next().equals(element)) {
+					it.remove();
+				}
+			}
 		}
 		return listeRassemble;
 	}
 
 	public static <T> boolean verifierRassemblement(List<T> liste) {
 
-	    ListIterator<T> iterateur1 = liste.listIterator();
-	    T precedent = iterateur1.next();
-	    while (iterateur1.hasNext()) {
-	        T courant = iterateur1.next();
-	        if (!courant.equals(precedent)) {
-	            ListIterator<T> iterateur2 = liste.listIterator(iterateur1.nextIndex());
+		ListIterator<T> iterateur1 = liste.listIterator();
+		T precedent = iterateur1.next();
+		while (iterateur1.hasNext()) {
+			T courant = iterateur1.next();
+			if (!courant.equals(precedent)) {
+				ListIterator<T> iterateur2 = liste.listIterator(iterateur1.nextIndex());
 
-	            while (iterateur2.hasNext()) {
-	                T suivant = iterateur2.next();
+				while (iterateur2.hasNext()) {
+					T suivant = iterateur2.next();
 
-	                if (suivant.equals(precedent)) {
-	                    return false;
-	                }
-	            }
+					if (suivant.equals(precedent)) {
+						return false;
+					}
+				}
 
-	            precedent = courant;
-	        }
-	    }
+				precedent = courant;
+			}
+		}
 
-	    return true;
+		return true;
 	}
-
 
 }
