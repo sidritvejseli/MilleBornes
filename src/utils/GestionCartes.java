@@ -69,7 +69,7 @@ public class GestionCartes {
 			   ListIterator<T> it = copie.listIterator();
 		        while (it.hasNext()) {
 		            if (it.next().equals(element)) {
-		                it.remove(); // supprime l'élément courant
+		                it.remove();
 		            }
 		        }
 		}
