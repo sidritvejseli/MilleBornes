@@ -24,23 +24,16 @@ class GestionCartesTest {
 
 		List<Integer> l3 = new ArrayList<>(Arrays.asList(1, 1, 2, 3, 1));
 		List<Integer> l4 = new ArrayList<>(Arrays.asList(1, 1, 1, 1, 1));
-		List<Integer> l5 = new ArrayList<>();
 
-		
-		assertTrue(GestionCartes.verifierMelange(l1,l3));
-		assertTrue(!GestionCartes.verifierMelange(l1,l2));
-		assertTrue(!GestionCartes.verifierMelange(l1,l4));
-		
+		assertTrue(GestionCartes.verifierMelange(l1, l3));
+		assertTrue(!GestionCartes.verifierMelange(l1, l2));
+		assertTrue(!GestionCartes.verifierMelange(l1, l4));
+
 		assertTrue(!GestionCartes.verifierRassemblement(l2));
-		System.out.println(GestionCartes.verifierRassemblement(GestionCartes.rassembler(l2)));
-		System.out.println(GestionCartes.rassembler(l2));
 		
 		assertTrue(GestionCartes.verifierRassemblement(GestionCartes.rassembler(l2)));
 
-		System.out.println(GestionCartes.melanger(l1));
-		System.out.println(GestionCartes.rassembler(l2));
 		
-
 	}
 
 }

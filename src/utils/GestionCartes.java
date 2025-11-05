@@ -7,12 +7,26 @@ import java.util.ListIterator;
 import java.util.Random;
 
 public class GestionCartes {
+	private static final Random random = new Random();
 
 	public static <T> T extraire(List<T> liste) {
-		Random random = new Random();
-		int indiceAleatoire =  (random.nextInt( liste.size()));
+
+		int indiceAleatoire = (random.nextInt(liste.size()));
 		T element = liste.get(indiceAleatoire);
 		liste.remove(indiceAleatoire);
+		return element;
+	}
+
+	public static <T> T extraireIterator(List<T> liste) {
+		ListIterator<T> iterateur = liste.listIterator();
+		T element = null;
+		int indiceAleatoire = (random.nextInt(liste.size()));
+		for (int i = 0; i <= indiceAleatoire; i++) {
+			element = iterateur.next();
+
+		}
+
+		iterateur.remove();
 		return element;
 	}
 
@@ -21,7 +35,7 @@ public class GestionCartes {
 		int taille = liste.size();
 
 		for (int i = 0; i < taille; i++) {
-			listeMelange.add(extraire(liste));
+			listeMelange.add(extraireIterator(liste));
 		}
 
 		return listeMelange;
@@ -35,23 +49,29 @@ public class GestionCartes {
 		} else {
 			for (T element1 : list1) {
 				int freq1 = Collections.frequency(list1, element1);
-				for (T element2 : list2) {
-					if (element1.equals(element2)) {
-						int freq2 = Collections.frequency(list2, element2);
-						if (freq2 != freq1) {
-							return false;
-						}
-					}
+				int freq2 = Collections.frequency(list2, element1);
+				if (freq1 != freq2) {
+					return false;
 				}
 			}
 		}
 		return true;
 	}
 
+
+	private static <T> void removeOccurrences(ListIterator<T> it,T element){
+		while (it.hasNext()) {
+			if (it.next().equals(element)) {
+				it.remove();
+			}
+		}
+		
+	}
+
 	public static <T> List<T> rassembler(List<T> liste) {
 		List<T> listeRassemble = new ArrayList<>();
 		List<T> copie = new ArrayList<>(liste);
-
+		
 		while (!copie.isEmpty()) {
 			T element = copie.get(0);
 			for (T e : copie) {
@@ -60,14 +80,20 @@ public class GestionCartes {
 				}
 			}
 
-			ListIterator<T> it = copie.listIterator();
-			while (it.hasNext()) {
-				if (it.next().equals(element)) {
-					it.remove();
-				}
-			}
+			removeOccurrences(copie.listIterator(), element);
+			
 		}
 		return listeRassemble;
+	}
+	
+	private static <T> boolean resteContient( List<T> liste, int indice_debut, T val_trouve) {
+		ListIterator<T> iterateur2 = liste.listIterator(indice_debut);
+		while (iterateur2.hasNext()) {
+	        if (val_trouve.equals(iterateur2.next())) {
+	            return true;
+	        }
+	    }
+	    return false;
 	}
 
 	public static <T> boolean verifierRassemblement(List<T> liste) {
@@ -76,15 +102,11 @@ public class GestionCartes {
 		T precedent = iterateur1.next();
 		while (iterateur1.hasNext()) {
 			T courant = iterateur1.next();
+			//changement de valeur : introduire le 2ieme iterateur
 			if (!courant.equals(precedent)) {
-				ListIterator<T> iterateur2 = liste.listIterator(iterateur1.nextIndex());
-
-				while (iterateur2.hasNext()) {
-					T suivant = iterateur2.next();
-
-					if (suivant.equals(precedent)) {
-						return false;
-					}
+				
+				if(resteContient(liste, iterateur1.nextIndex(), precedent)) {
+					return false;
 				}
 
 				precedent = courant;

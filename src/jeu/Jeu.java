@@ -1,5 +1,5 @@
 package jeu;
-
+ 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,7 +19,7 @@ public class Jeu {
 		Collections.addAll(listeCartes, jeuDeCartes.donnerCartes());
 
 		listeCartes = GestionCartes.melanger(listeCartes);
-		Carte[] tabMelange =  (Carte[]) listeCartes.toArray();
+		Carte[] tabMelange =  listeCartes.toArray(new Carte[0]);
 		
 		sabot = new Sabot(tabMelange);
 		
