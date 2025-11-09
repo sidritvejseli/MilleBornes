@@ -26,8 +26,6 @@ class TestMethodeEquals {
 		Carte feuRouge1 = new Attaque(Type.FEU);
 		Carte feuRouge2 = new Attaque(Type.FEU);
 		Carte feuVert = new Parade(Type.FEU);
-
-		Carte crevaison = new Attaque(Type.CREVAISON);
 		assertTrue(carte1.equals(carte2));
 		assertTrue(feuRouge1.equals(feuRouge2));
 		assertTrue(!feuRouge1.equals(feuVert));

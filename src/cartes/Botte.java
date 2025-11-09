@@ -11,12 +11,4 @@ public class Botte extends Probleme {
 		return getType().getBotte();
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof  Botte botte) {
-			return this.toString().equals(botte.toString());
-
-		}
-		return false;
-	}
 }

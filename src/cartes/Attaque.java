@@ -11,12 +11,5 @@ public class Attaque extends Bataille {
 		return getType().getAttaque();
 	}
 	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj instanceof Attaque attaque) {
-			return this.toString().equals(attaque.toString());
-			
-		}
-		return false;
-	}
+	
 }
