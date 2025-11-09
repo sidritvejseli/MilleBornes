@@ -1,4 +1,4 @@
-package testFonctionnels;
+package test_fonctionnels;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,9 +13,7 @@ import utils.GestionCartes;
 
 class GestionCartesTest {
 
-	@BeforeEach
-	void setUp() throws Exception {
-	}
+	
 
 	@Test
 	void test() {

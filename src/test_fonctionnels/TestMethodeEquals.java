@@ -1,4 +1,4 @@
-package testFonctionnels;
+package test_fonctionnels;
 
 import static org.junit.jupiter.api.Assertions.*;
 

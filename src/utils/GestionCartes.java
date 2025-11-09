@@ -12,19 +12,15 @@ public class GestionCartes {
 	public static <T> T extraire(List<T> liste) {
 
 		int indiceAleatoire = (random.nextInt(liste.size()));
-		T element = liste.get(indiceAleatoire);
-		liste.remove(indiceAleatoire);
-		return element;
+
+		return liste.remove(indiceAleatoire);
 	}
 
 	public static <T> T extraireIterator(List<T> liste) {
-		ListIterator<T> iterateur = liste.listIterator();
-		T element = null;
-		int indiceAleatoire = (random.nextInt(liste.size()));
-		for (int i = 0; i <= indiceAleatoire; i++) {
-			element = iterateur.next();
 
-		}
+		int indiceAleatoire = (random.nextInt(liste.size()));
+		ListIterator<T> iterateur = liste.listIterator(indiceAleatoire);
+		T element = iterateur.next();
 
 		iterateur.remove();
 		return element;
@@ -32,9 +28,8 @@ public class GestionCartes {
 
 	public static <T> List<T> melanger(List<T> liste) {
 		List<T> listeMelange = new ArrayList<>();
-		int taille = liste.size();
 
-		for (int i = 0; i < taille; i++) {
+		for (int i = 0; i < liste.size(); i++) {
 			listeMelange.add(extraireIterator(liste));
 		}
 
@@ -58,20 +53,19 @@ public class GestionCartes {
 		return true;
 	}
 
-
-	private static <T> void removeOccurrences(ListIterator<T> it,T element){
+	private static <T> void removeOccurrences(ListIterator<T> it, T element) {
 		while (it.hasNext()) {
 			if (it.next().equals(element)) {
 				it.remove();
 			}
 		}
-		
+
 	}
 
 	public static <T> List<T> rassembler(List<T> liste) {
 		List<T> listeRassemble = new ArrayList<>();
 		List<T> copie = new ArrayList<>(liste);
-		
+
 		while (!copie.isEmpty()) {
 			T element = copie.get(0);
 			for (T e : copie) {
@@ -81,19 +75,19 @@ public class GestionCartes {
 			}
 
 			removeOccurrences(copie.listIterator(), element);
-			
+
 		}
 		return listeRassemble;
 	}
-	
-	private static <T> boolean resteContient( List<T> liste, int indice_debut, T val_trouve) {
+
+	private static <T> boolean resteContient(List<T> liste, int indice_debut, T val_trouve) {
 		ListIterator<T> iterateur2 = liste.listIterator(indice_debut);
 		while (iterateur2.hasNext()) {
-	        if (val_trouve.equals(iterateur2.next())) {
-	            return true;
-	        }
-	    }
-	    return false;
+			if (val_trouve.equals(iterateur2.next())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public static <T> boolean verifierRassemblement(List<T> liste) {
@@ -102,10 +96,10 @@ public class GestionCartes {
 		T precedent = iterateur1.next();
 		while (iterateur1.hasNext()) {
 			T courant = iterateur1.next();
-			//changement de valeur : introduire le 2ieme iterateur
+			// changement de valeur : introduire le 2ieme iterateur
 			if (!courant.equals(precedent)) {
-				
-				if(resteContient(liste, iterateur1.nextIndex(), precedent)) {
+
+				if (resteContient(liste, iterateur1.nextIndex(), precedent)) {
 					return false;
 				}
 

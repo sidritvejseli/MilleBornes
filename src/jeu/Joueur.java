@@ -1,5 +1,6 @@
 package jeu;
 
+import cartes.Borne;
 import cartes.Carte;
 
 public class Joueur {
@@ -23,22 +24,34 @@ public class Joueur {
 		}
 		return false;
 	}
+	@Override
+	public int hashCode() {
+		return 31*nom.hashCode();
+	}
 
 	@Override
 	public String toString() {
-		return this.nom.toString();
+		return this.nom;
 	}
 
 	public void donner(Carte carte) {
 		main.prendre(carte);
 	}
-	
+
 	public Carte prendreCarte(Sabot sabot) {
-		if(!sabot.estVide()) {
+		if (!sabot.estVide()) {
 			Carte carte = sabot.piocher();
 			donner(carte);
 			return carte;
 		}
 		return null;
+	}
+	
+	public int donnerKmParcourus() {
+		return zoneDeJeu.donnerKmParcourus();
+	}
+	
+	public void deposer(Carte c) {
+		zoneDeJeu.deposer(c);
 	}
 }

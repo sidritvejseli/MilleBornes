@@ -1,4 +1,4 @@
-package testFonctionnels;
+package test_fonctionnels;
 
 import java.util.Iterator;
 
@@ -45,7 +45,7 @@ public class TestSabot {
 			Carte carte = iterator.next();
 			System.out.println("Je pioche " + carte);
 			iterator.remove();
-			Carte cartePiochee1 = sabot.piocher();
+
 			sabot.ajouterCarte(new Botte(cartes.Type.ACCIDENT));
 		}
 		Iterator<Carte> iterator = sabot.iterator();
@@ -54,8 +54,8 @@ public class TestSabot {
 
 	public static void main(String[] args) {
 		TestSabot testPioche = new TestSabot();
-		//testPioche.questionA();
-		//testPioche.questionB();
+		// testPioche.questionA();
+		// testPioche.questionB();
 		testPioche.questionC();
 	}
 

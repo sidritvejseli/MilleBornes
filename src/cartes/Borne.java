@@ -10,5 +10,7 @@ public class Borne extends Carte {
 	public String toString() {
 		return Integer.toString(km)+"KM";
 	}
-	
+	public int getKm() {
+		return km;
+	}
 }
