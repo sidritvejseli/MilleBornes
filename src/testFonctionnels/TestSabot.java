@@ -1,4 +1,4 @@
-package test_fonctionnels;
+package testFonctionnels;
 
 import java.util.Iterator;
 

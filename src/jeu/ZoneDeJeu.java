@@ -51,26 +51,56 @@ public class ZoneDeJeu {
 	public boolean peutAvancer() {
 		return (!pileBataille.isEmpty()) && pileBataille.getLast().equals(new Parade(Type.FEU));
 	}
-	
+
 	public boolean estDepotFeuVertAutorise() {
-		return pileBataille.isEmpty() || pileBataille.getLast().equals(new Attaque(Type.FEU)) 
+		return pileBataille.isEmpty() || pileBataille.getLast().equals(new Attaque(Type.FEU))
 				|| !(pileBataille.getLast().equals(new Parade(Type.FEU)));
 	}
-	
+
 	public boolean estDepotBorneAutorise(Borne borne) {
-		return !peutAvancer() && (borne.getKm()<= donnerLimitationVitesse())
-				&& (donnerKmParcourus()+borne.getKm() <= 1000);
+		return peutAvancer() && (borne.getKm() <= donnerLimitationVitesse())
+				&& (donnerKmParcourus() + borne.getKm() <= 1000);
 	}
-	
+
 	public boolean estDepotLimiteAutorise(Limite limite) {
-		if(limite instanceof DebutLimite) {
+		if (limite instanceof DebutLimite) {
 			return pileLimites.isEmpty() || pileLimites.getLast() instanceof FinLimite;
-		}
-		else {
+		} else {
 			return pileLimites.getLast() instanceof DebutLimite;
 		}
-		
+
+	}
+
+	public boolean estDepotBatailleAutorise(Bataille bataille) {
+		if(bataille instanceof Attaque) {
+				return peutAvancer();
+		}
+	
+		else if (bataille instanceof Parade p) {
+			if (p.getType() == Type.FEU) {
+				return estDepotFeuVertAutorise();
+			} else {
+				return !(pileBataille.isEmpty()) && pileBataille.getLast().getType() == p.getType();
+			}
+		}
+
+		return false;
 	}
 	
+	public boolean estDepotAutorise(Carte carte) {
+		if(carte instanceof Borne b) {
+			return estDepotBorneAutorise(b);
+			
+		}
+		else if (carte instanceof Limite l) {
+			return estDepotLimiteAutorise(l);
+		}
+		else if (carte instanceof Bataille b) {
+			return estDepotBatailleAutorise(b);
+		}
+		else {
+	        throw new IllegalArgumentException("Type de carte inconnu" );
+	    }
+	}
 
 }
