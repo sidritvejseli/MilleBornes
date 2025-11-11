@@ -26,4 +26,7 @@ public class MainJoueur {
 		}
 		return affichageMain;
 	}
+	public List<Carte> getMain() {
+		return main;
+	}
 }

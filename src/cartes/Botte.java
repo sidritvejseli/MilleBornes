@@ -14,8 +14,8 @@ public class Botte extends Probleme {
 	@Override
 	public boolean equals(Object obj) {
 	    if (this == obj) return true;
-	    if (!(obj instanceof Botte other)) return false;
-	    return this.getType() == other.getType();
+	    if (!(obj instanceof Botte b)) return false;
+	    return this.getType() == b.getType();
 	}
 
 	@Override

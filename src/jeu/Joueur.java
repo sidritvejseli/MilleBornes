@@ -1,12 +1,16 @@
 package jeu;
 
-import cartes.Borne;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
+
 import cartes.Carte;
 
 public class Joueur {
-	String nom;
-	ZoneDeJeu zoneDeJeu;
-	MainJoueur main;
+	private String nom;
+	private ZoneDeJeu zoneDeJeu;
+	private MainJoueur main;
+	Random random = new Random();
 
 	public Joueur(String nom) {
 		this.nom = nom;
@@ -17,6 +21,10 @@ public class Joueur {
 		return nom;
 	}
 
+	public MainJoueur getMain() {
+		return main;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Joueur joueur) {
@@ -24,9 +32,10 @@ public class Joueur {
 		}
 		return false;
 	}
+
 	@Override
 	public int hashCode() {
-		return 31*nom.hashCode();
+		return 31 * nom.hashCode();
 	}
 
 	@Override
@@ -46,12 +55,56 @@ public class Joueur {
 		}
 		return null;
 	}
-	
+
 	public int donnerKmParcourus() {
 		return zoneDeJeu.donnerKmParcourus();
 	}
-	
+
 	public void deposer(Carte c) {
 		zoneDeJeu.deposer(c);
+	}
+
+	public boolean estDepotAutorise(Carte carte) {
+		return zoneDeJeu.estDepotAutorise(carte);
+	}
+
+	public Set<Coup> coupsDefausse() {
+		Set<Coup> defausses = new HashSet<>();
+
+		for (Carte c : main.getMain()) {
+			defausses.add(new Coup(this, c, null));
+		}
+		return defausses;
+	}
+
+	public void retirerDeLaMain(Carte carte) {
+		main.getMain().remove(carte);
+	}
+
+	public Set<Coup> coupsPossibles(Set<Joueur> participants) {
+		Set<Coup> coups = new HashSet<>();
+		for (Joueur participant : participants) {
+			for (Carte c : main.getMain()) {
+				Coup coupCourant = new Coup(this, c, participant);
+				if (coupCourant.estValide()) {
+					coups.add(coupCourant);
+				}
+			}
+		}
+
+		return coups;
+	}
+
+	public Coup choisirCoup(Set<Joueur> participants) {
+		Set<Coup> coups = coupsPossibles(participants);
+		if (coups.isEmpty()) {
+
+			coups = coupsDefausse();
+
+		}
+		Coup[] tabCoups = coups.toArray(new Coup[coups.size()]);
+		int indiceAleatoire = random.nextInt(coups.size());
+		return tabCoups[indiceAleatoire];
+
 	}
 }
