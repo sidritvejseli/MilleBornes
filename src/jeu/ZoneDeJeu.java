@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import cartes.Carte;
+import cartes.Cartes;
 import cartes.DebutLimite;
 import cartes.FinLimite;
 import cartes.Limite;
@@ -15,16 +16,16 @@ import cartes.Type;
 import cartes.Attaque;
 import cartes.Bataille;
 import cartes.Borne;
+import cartes.Botte;
 
 public class ZoneDeJeu {
-	Set<Carte> bottes = new HashSet<>();
-
+	Set<Botte> bottes = new HashSet<>();
 	List<Limite> pileLimites = new LinkedList<>();
 	List<Bataille> pileBataille = new LinkedList<>();
 	List<Borne> bornes = new ArrayList<>();
 
 	public int donnerLimitationVitesse() {
-		if (pileLimites.isEmpty() || (pileLimites.getLast() instanceof FinLimite)) {
+		if (pileLimites.isEmpty() || (pileLimites.getLast() instanceof FinLimite) || estPrioritaire()) {
 			return 200;
 		}
 		return 50;
@@ -39,30 +40,55 @@ public class ZoneDeJeu {
 	}
 
 	public void deposer(Carte c) {
-		if (c instanceof Borne b) {
-			bornes.add(b);
-		} else if (c instanceof Limite l) {
-			pileLimites.add(l);
-		} else if (c instanceof Bataille b) {
-			pileBataille.add(b);
+		switch (c) {
+		case Borne b -> bornes.add(b);
+
+		case Limite l -> pileLimites.add(l);
+
+		case Bataille b -> pileBataille.add(b);
+
+		case Botte b -> bottes.add(b);
+
+		default -> throw new IllegalArgumentException("Type de carte inconnu");
+
 		}
 	}
 
+//
 	public boolean peutAvancer() {
-		return (!pileBataille.isEmpty()) && pileBataille.getLast().equals(new Parade(Type.FEU));
+		if (pileBataille.isEmpty()) {
+			return estPrioritaire();
+		}
+		Bataille sommet = pileBataille.getLast();
+
+		return sommet.equals(Cartes.FEU_VERT) || (sommet instanceof Parade && estPrioritaire())
+				|| (sommet instanceof Attaque a && a.getType() == Type.FEU && estPrioritaire())
+				|| (sommet instanceof Attaque a && bottes.contains(new Botte(a.getType())) && estPrioritaire());
 	}
 
-	public boolean estDepotFeuVertAutorise() {
-		return pileBataille.isEmpty() || pileBataille.getLast().equals(new Attaque(Type.FEU))
-				|| !(pileBataille.getLast().equals(new Parade(Type.FEU)));
+	private boolean estDepotFeuVertAutorise() {
+		if (estPrioritaire()) {
+			return false;
+		}
+
+		if (pileBataille.isEmpty()) {
+			return true;
+		}
+		Bataille sommet = pileBataille.getLast();
+
+		return (sommet.equals(Cartes.FEU_ROUGE)) || (sommet instanceof Parade && !(sommet.equals(Cartes.FEU_VERT)))
+				|| (sommet instanceof Attaque a && bottes.contains(new Botte(a.getType())));
 	}
 
-	public boolean estDepotBorneAutorise(Borne borne) {
+	private boolean estDepotBorneAutorise(Borne borne) {
 		return peutAvancer() && (borne.getKm() <= donnerLimitationVitesse())
 				&& (donnerKmParcourus() + borne.getKm() <= 1000);
 	}
 
-	public boolean estDepotLimiteAutorise(Limite limite) {
+	private boolean estDepotLimiteAutorise(Limite limite) {
+		if (estPrioritaire()) {
+			return false;
+		}
 		if (limite instanceof DebutLimite) {
 			return pileLimites.isEmpty() || pileLimites.getLast() instanceof FinLimite;
 		} else {
@@ -71,12 +97,15 @@ public class ZoneDeJeu {
 
 	}
 
-	public boolean estDepotBatailleAutorise(Bataille bataille) {
-		if(bataille instanceof Attaque) {
-				return peutAvancer();
+//
+
+	private boolean estDepotBatailleAutorise(Bataille bataille) {
+		if (bottes.contains(new Botte(bataille.getType()))) {
+			return false;
 		}
-	
-		else if (bataille instanceof Parade p) {
+		if (bataille instanceof Attaque) {
+			return peutAvancer();
+		} else if (bataille instanceof Parade p) {
 			if (p.getType() == Type.FEU) {
 				return estDepotFeuVertAutorise();
 			} else {
@@ -86,21 +115,20 @@ public class ZoneDeJeu {
 
 		return false;
 	}
-	
+
 	public boolean estDepotAutorise(Carte carte) {
-		if(carte instanceof Borne b) {
-			return estDepotBorneAutorise(b);
-			
-		}
-		else if (carte instanceof Limite l) {
-			return estDepotLimiteAutorise(l);
-		}
-		else if (carte instanceof Bataille b) {
-			return estDepotBatailleAutorise(b);
-		}
-		else {
-	        throw new IllegalArgumentException("Type de carte inconnu" );
-	    }
+		return switch (carte) {
+		case Borne b -> estDepotBorneAutorise(b);
+		case Limite l -> estDepotLimiteAutorise(l);
+		case Bataille b -> estDepotBatailleAutorise(b);
+		case Botte b -> bottes.add(b);
+
+		default -> throw new IllegalArgumentException("Type de carte inconnu");
+		};
+	}
+
+	public boolean estPrioritaire() {
+		return bottes.contains(Cartes.PRIORITAIRE);
 	}
 
 }
