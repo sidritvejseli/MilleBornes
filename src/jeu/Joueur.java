@@ -28,6 +28,10 @@ public class Joueur {
 	public MainJoueur getMain() {
 		return main;
 	}
+	
+	public ZoneDeJeu getZoneDeJeu() {
+		return zoneDeJeu;
+	}
 
 	@Override
 	public boolean equals(Object obj) {

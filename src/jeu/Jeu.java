@@ -1,14 +1,10 @@
 package jeu;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import cartes.Bataille;
-import cartes.Botte;
 import cartes.Carte;
 import cartes.JeuDeCartes;
 import utils.GestionCartes;
@@ -63,4 +59,7 @@ public class Jeu {
 	        
 	        return sb.toString();
 	}
+	
+	
+
 }

@@ -7,7 +7,7 @@ import cartes.Carte;
 
 public class MainJoueur {
 
-	List<Carte> main = new ArrayList<>();
+	private List<Carte> main = new ArrayList<>();
 	
 	
 	public void prendre(Carte carte) {

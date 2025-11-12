@@ -9,7 +9,7 @@ public class Parade extends Bataille {
 
 	@Override
 	public String toString() {
-		return getType().toString();
+		return getType().getParade();
 	}
 
 }

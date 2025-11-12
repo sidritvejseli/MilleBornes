@@ -21,11 +21,20 @@ class TestMethodeEquals {
 	void test() {
 		Carte carte1 = sabot.piocher();
 		Carte carte2 = sabot.piocher();
+		
+		
+		Carte borne = new Borne(25);
+		Carte borne2 = new Borne(50);
+
+		
 
 
 		Carte feuRouge1 = new Attaque(Type.FEU);
 		Carte feuRouge2 = new Attaque(Type.FEU);
 		Carte feuVert = new Parade(Type.FEU);
+		
+		assertTrue(!borne.equals(borne2));
+		
 		assertTrue(carte1.equals(carte2));
 		assertTrue(feuRouge1.equals(feuRouge2));
 		assertTrue(!feuRouge1.equals(feuVert));
