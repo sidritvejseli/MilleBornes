@@ -9,7 +9,7 @@ import cartes.Bataille;
 import cartes.Botte;
 import cartes.Carte;
 
-public class Joueur {
+public class Joueur  {
 	private String nom;
 	private ZoneDeJeu zoneDeJeu;
 	private MainJoueur main;
