@@ -1,9 +1,12 @@
 package jeu;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import cartes.Bataille;
+import cartes.Botte;
 import cartes.Carte;
 
 public class Joueur {
@@ -15,6 +18,7 @@ public class Joueur {
 	public Joueur(String nom) {
 		this.nom = nom;
 		zoneDeJeu = new ZoneDeJeu();
+		main = new MainJoueur();
 	}
 
 	public String getNom() {
@@ -107,4 +111,25 @@ public class Joueur {
 		return tabCoups[indiceAleatoire];
 
 	}
+	
+    public String afficherEtatJoueur() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("État du joueur ").append(nom).append(" :\n");
+        
+        Set<Botte> bottes = zoneDeJeu.bottes;
+        sb.append("- Bottes: ").append(bottes.isEmpty() ? "Aucune" : bottes).append("\n");
+
+        boolean limitation = zoneDeJeu.donnerLimitationVitesse() == 50;
+        sb.append("- Limitation de vitesse : ").append(limitation).append("\n");
+
+        List<Bataille> pileBataille = zoneDeJeu.pileBataille;
+        Bataille sommet = pileBataille.isEmpty() ? null : pileBataille.getLast();
+        sb.append("- Sommet pile de bataille : ").append(sommet).append("\n");
+
+        List<Carte> cartesMain = main.getMain();
+        sb.append("- Il a dans sa main: ").append(cartesMain.isEmpty() ? "Vide" : cartesMain).append("\n");
+
+        return sb.toString();
+    }
+	
 }

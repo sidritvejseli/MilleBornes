@@ -92,7 +92,7 @@ public class ZoneDeJeu {
 		if (limite instanceof DebutLimite) {
 			return pileLimites.isEmpty() || pileLimites.getLast() instanceof FinLimite;
 		} else {
-			return pileLimites.getLast() instanceof DebutLimite;
+			return !pileLimites.isEmpty() && pileLimites.getLast() instanceof DebutLimite;
 		}
 
 	}

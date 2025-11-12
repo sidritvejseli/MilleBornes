@@ -1,6 +1,7 @@
 package jeu;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import cartes.Attaque;
@@ -40,21 +41,28 @@ public class Coup {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof Coup c) {
-			return joueurCible.equals(c.getJoueurCible()) && joueurCourant.equals(c.getJoueurCourant())
-					&& carteJouee.equals(c.getCarteJouee());
-		}
-		return false;
+	    if (this == obj) return true; // optimisation classique
+	    if (!(obj instanceof Coup c)) return false;
+
+	    return Objects.equals(joueurCourant, c.getJoueurCourant())
+	        && Objects.equals(carteJouee, c.getCarteJouee())
+	        && Objects.equals(joueurCible, c.getJoueurCible());
+	}
+
+
+	
+	@Override
+	public int hashCode() {
+	    return Objects.hash(joueurCourant, carteJouee, joueurCible);
 	}
 
 	@Override
-	public int hashCode() {
-		int result = 1;
-		result = 31 * result + (joueurCourant == null ? 0 : joueurCourant.hashCode());
-		result = 31 * result + (carteJouee == null ? 0 : carteJouee.hashCode());
-		result = 31 * result + (joueurCible == null ? 0 : joueurCible.hashCode());
-		return result;
+	public String toString() {
+		if (joueurCible != null) {
+			return "Depose la carte " + carteJouee.toString() + " dans la zone de jeu de " + joueurCible.getNom();
+		} else {
+			return "Defausse la carte " + carteJouee.toString();
+		}
 	}
-
 
 }
